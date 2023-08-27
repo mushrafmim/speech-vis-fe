@@ -1,15 +1,21 @@
 import CardLayout from "../layouts/CardLayout";
 import male from "./../assets/male.svg"
+import teenager from "./../assets/teenager.svg"
 
-export default function Age() {
+const age_category = {
+    "[0, 20)": teenager,
+    "[20, 40)": 
+}
+
+const Age: React.FC = (category: string,) => {
     return (
         <CardLayout
             title={"AGE CATEGORY"}
         >
             <div
-                className="flex items-center justify-center"
+                className="flex items-center justify-center mb-4"
             >
-                <img src={male} className="w-52 mb-4" alt="" />
+                <img src={male} className="w-52" alt="" />
             </div>
             <div
                 className="flex items-center justify-center"
@@ -20,6 +26,8 @@ export default function Age() {
                     30 - 35
                 </div>
             </div>
-        </CardLayout>
+        </CardLayout >
     )
 };
+
+export default Age

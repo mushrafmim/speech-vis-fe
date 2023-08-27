@@ -7,7 +7,7 @@ export default function Gender() {
         <CardLayout
             title="GENDER"
         >
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mb-4">
                 <img src={female} className="w-52" alt="" />
             </div>
             <div
