@@ -1,8 +1,22 @@
 import CardLayout from "../layouts/CardLayout";
+import { predictGender } from "../services/genderService";
 import female from "./../assets/female.svg"
 
 
-export default function Gender() {
+export default function Gender({ file, onPredict }) {
+
+    const makePrediction = () => {
+
+        predictGender(file)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch(e => console.log(e))
+    }
+
+    onPredict(makePrediction)
+
+
     return (
         <CardLayout
             title="GENDER"

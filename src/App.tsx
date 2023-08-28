@@ -8,11 +8,13 @@ import LanguageAndAccent from './components/LanguageAndAccent'
 import { BsFillCloudUploadFill, BsFillMicFill } from 'react-icons/bs'
 import { predictAgeCategory } from './services/ageService'
 import Button from './components/Button'
+import { predictGender } from './services/genderService'
+import Emotion from './components/Emotion'
 
 function App(): React.ReactElement {
 
-  const [file, setFile] = useState < File | null > (null)
-  const [audioURL, setAudioURL] = useState < string | undefined > ()
+  const [file, setFile] = useState<File | null>(null)
+  const [audioURL, setAudioURL] = useState<string | undefined>()
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +30,12 @@ function App(): React.ReactElement {
 
   const makePrediction = () => {
     predictAgeCategory(file)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch(e => console.log(e))
+
+    predictGender(file)
       .then((res) => {
         console.log(res.data)
       })
@@ -67,10 +75,11 @@ function App(): React.ReactElement {
         </div>
       </div>
       <div className="flex">
-        <Age />
-        <Gender />
+        <Age category="[20, 40)" />
+        <Gender onPredict={makePrediction} />
         <LanguageAndAccent />
         <GeneratedVoice />
+        <Emotion />
       </div>
     </div>
   )

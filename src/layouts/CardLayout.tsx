@@ -1,13 +1,13 @@
 import React, { ReactNode, useEffect } from "react";
-import { ClipLoader } from "react-spinners";
 import Spinner from "../components/Spinner";
 
 interface CardLayoutProp {
     title: string,
-    children: ReactNode
+    children: ReactNode,
+    props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-const CardLayout: React.FC<CardLayoutProp> = ({ title, children }) => {
+const CardLayout: React.FC<CardLayoutProp> = ({ title, children, ...props }) => {
     const [isLoading, setIsLoading] = React.useState(true);
 
     useEffect(() => {
@@ -19,6 +19,7 @@ const CardLayout: React.FC<CardLayoutProp> = ({ title, children }) => {
     return (
         <div
             className="m-8 w-96 h-80 bg-white p-4 shadow-lg"
+            {...props}
         >
             <div className="text-primary font-bold mb-4 uppercase">
                 {title}

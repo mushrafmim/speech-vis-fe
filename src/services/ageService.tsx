@@ -1,8 +1,8 @@
 import http from "../../http-common";
 
-
+const sub_URL = "/versae/wav2vec2-base-finetuned-coscan-age_group"
 async function predictAgeCategory(data: File) {
-    return http.post("/", data);
+    return http.post(sub_URL, data);
 }
 
 
