@@ -1,20 +1,34 @@
+import { useEffect, useState } from "react";
 import CardLayout from "../layouts/CardLayout";
 import { predictGender } from "../services/genderService";
 import female from "./../assets/female.svg"
+import male from "./../assets/male.svg"
+
+const gender = {
+    "male": male,
+    "female": female
+}
 
 
-export default function Gender({ file, onPredict }) {
+export default function Gender({ file, isSubmitted }) {
+    const [currentGender, setCurrentGender] = useState()
 
     const makePrediction = () => {
 
         predictGender(file)
             .then((res) => {
-                console.log(res.data)
+                console.log(res)
+                setCurrentGender(res.data[0].label)
             })
             .catch(e => console.log(e))
     }
 
-    onPredict(makePrediction)
+
+    useEffect(() => {
+        if (isSubmitted) {
+            makePrediction()
+        }
+    }, [isSubmitted])
 
 
     return (
@@ -22,7 +36,7 @@ export default function Gender({ file, onPredict }) {
             title="GENDER"
         >
             <div className="flex items-center justify-center mb-4">
-                <img src={female} className="w-52" alt="" />
+                <img src={gender[currentGender]} className="w-52" alt="" />
             </div>
             <div
                 className="flex items-center justify-center"
@@ -30,7 +44,7 @@ export default function Gender({ file, onPredict }) {
                 <div
                     className="text-xl"
                 >
-                    FEMALE
+                    {currentGender}
                 </div>
             </div>
         </CardLayout>

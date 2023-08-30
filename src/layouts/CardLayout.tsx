@@ -4,10 +4,11 @@ import Spinner from "../components/Spinner";
 interface CardLayoutProp {
     title: string,
     children: ReactNode,
+    width_factor: number,
     props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-const CardLayout: React.FC<CardLayoutProp> = ({ title, children, ...props }) => {
+const CardLayout: React.FC<CardLayoutProp> = ({ title, children, width_factor = 1, ...props }) => {
     const [isLoading, setIsLoading] = React.useState(true);
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const CardLayout: React.FC<CardLayoutProp> = ({ title, children, ...props }) => 
 
     return (
         <div
-            className="m-8 w-96 h-80 bg-white p-4 shadow-lg"
+            className={`m-2 h-80 bg-white p-4 shadow-lg flex-grow`}
             {...props}
         >
             <div className="text-primary font-bold mb-4 uppercase">

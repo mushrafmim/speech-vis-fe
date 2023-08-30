@@ -3,6 +3,8 @@ import male from "./../assets/male.svg"
 import teenager from "./../assets/teenager.svg"
 import worker from "./../assets/worker.svg";
 import female from "./../assets/female.svg";
+import { useEffect, useState } from "react";
+import { predictAgeCategory } from "../services/ageService";
 
 interface age_props {
     category: string
@@ -27,11 +29,24 @@ const age_category = {
     }
 }
 
-const Age: React.FC<age_props> = ({ category }) => {
+const Age: React.FC<age_props> = ({ file, isSubmitted }) => {
 
-    const cat = age_category[category];
+    const [currentCategory, setCurrentCategory] = useState("[40, 60)")
 
-    console.log(cat)
+    const makePrediction = () => {
+        predictAgeCategory(file)
+            .then((res) => {
+                console.log(res)
+                setCurrentCategory(res.data[0].label)
+            })
+            .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        if (isSubmitted) {
+            makePrediction()
+        }
+    }, [isSubmitted])
 
     return (
         <CardLayout
@@ -40,7 +55,7 @@ const Age: React.FC<age_props> = ({ category }) => {
             <div
                 className="flex items-center justify-center mb-4"
             >
-                <img src={cat.image} className="w-52" alt="" />
+                <img src={age_category[currentCategory].image} className="h-48" alt="" />
             </div>
             <div
                 className="flex items-center justify-center"
@@ -48,7 +63,7 @@ const Age: React.FC<age_props> = ({ category }) => {
                 <div
                     className="text-xl"
                 >
-                    {cat.text}
+                    {age_category[currentCategory].text}
                 </div>
             </div>
         </CardLayout >

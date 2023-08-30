@@ -10,11 +10,14 @@ import { predictAgeCategory } from './services/ageService'
 import Button from './components/Button'
 import { predictGender } from './services/genderService'
 import Emotion from './components/Emotion'
+import Transcript from './components/Transcript'
 
 function App(): React.ReactElement {
 
-  const [file, setFile] = useState<File | null>(null)
-  const [audioURL, setAudioURL] = useState<string | undefined>()
+  const [file, setFile] = useState < File | null > (null)
+  const [audioURL, setAudioURL] = useState < string | undefined > ()
+
+  const [onPredict, setOnPredict] = useState < boolean > (false)
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,17 +72,20 @@ function App(): React.ReactElement {
           </div>
           <audio controls={true} src={audioURL}>
           </audio>
-          <Button text="PREDICT" onClick={makePrediction} disabled={audioURL ? false : true} />
+          <Button text="PREDICT" onClick={() => setOnPredict(true)} disabled={audioURL ? false : true} />
         </div>
         <div>
         </div>
       </div>
-      <div className="flex">
-        <Age category="[20, 40)" />
-        <Gender onPredict={makePrediction} />
-        <LanguageAndAccent />
+      <div className="flex justify-between">
+        <Age file={file} isSubmitted={onPredict} />
+        <Gender file={file} isSubmitted={onPredict} />
+        <LanguageAndAccent file={file} isSubmitted={onPredict} />
         <GeneratedVoice />
-        <Emotion />
+      </div>
+      <div className="flex justify-between">
+        <Emotion file={file} isSubmitted={onPredict} />
+        <Transcript file={file} isSubmitted={onPredict} />
       </div>
     </div>
   )
