@@ -44,7 +44,7 @@ const Emotion: React.FC = ({ file, isSubmitted }) => {
         predictEmotion(file)
             .then((res) => {
                 console.log(res)
-                setEmotions(res.data.slice(0, 3).map((emotion: any) => (emotion.label)))
+                setEmotions(res.data.slice(0, 3))
             })
             .catch(e => console.log(e))
     }
@@ -62,17 +62,20 @@ const Emotion: React.FC = ({ file, isSubmitted }) => {
         >
             <div className="flex align-center justify-evenly">
                 {emotions.map((emotion, index) => (
-                    <div key={index}>
+                    <div key={index} className="flex-1">
                         <div className="text-[9.5rem]">
-                            {emotionMapping[emotion]?.image}
+                            {emotionMapping[emotion?.label]?.image}
                         </div>
                         <div
-                            className="flex items-center justify-center"
+                            className="flex items-center justify-between px-4"
                         >
                             <div
                                 className="text-xl"
                             >
-                                {emotionMapping[emotion]?.text}
+                                {emotionMapping[emotion?.label]?.text}
+                            </div>
+                            <div>
+                                {`${(emotion.score * 100).toFixed(2)} %`}
                             </div>
                         </div>
                     </div>

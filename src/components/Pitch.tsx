@@ -32,24 +32,34 @@ const Pitch: React.FC = ({ file, isSubmitted }) => {
                 {/* <img src={genVoice} className="w-48 rounded-full" alt="" /> */}
                 <GaugeComponent
                     value={pitch}
-                    maxValue={300}
+                    maxValue={320}
+                    pointer={{
+                        color: 'black',
+                    }
+                    }
                     labels={{
                         valueLabel: {
                             formatTextValue: (value) => `${value} Hz`,
                             style: {
                                 fontSize: '40px',
                                 color: 'black',
-                                backgroundClip: 'black'
+                                // backgroundClip: 'black'
                             }
                         },
                         tickLabels: {
                             type: 'outer',
+                            defaultTickValueConfig: {
+                                formatTextValue: value => value + ' Hz'
+                            },
                             ticks: [
                                 { value: 40 },
                                 { value: 80 },
                                 { value: 120 },
                                 { value: 160 },
                                 { value: 200 },
+                                { value: 240 },
+                                { value: 280 },
+                                { value: 320 }
                             ]
                         }
                     }}
