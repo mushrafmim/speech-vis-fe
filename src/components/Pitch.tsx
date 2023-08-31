@@ -1,9 +1,29 @@
 import GaugeComponent from "react-gauge-component"
 import CardLayout from "../layouts/CardLayout"
-import genVoice from "./../assets/gen-voice.png"
+import { useEffect, useState } from "react"
+import { getPitch } from "../services/pitchService"
 
+const Pitch: React.FC = ({ file, isSubmitted }) => {
+    const [pitch, setPitch] = useState<number | undefined>(0)
 
-const GeneratedVoice: React.FC = () => {
+    const makePrediction = () => {
+
+        const formdata = new FormData()
+        formdata.append("file", file)
+
+        getPitch(formdata)
+            .then((res) => {
+                setPitch(res.data.pitch)
+            })
+            .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        if (isSubmitted) {
+            makePrediction()
+        }
+    }, [isSubmitted])
+
     return (
         <CardLayout
             title="Pitch"
@@ -11,8 +31,8 @@ const GeneratedVoice: React.FC = () => {
             <div className="flex items-center justify-center mb-4">
                 {/* <img src={genVoice} className="w-48 rounded-full" alt="" /> */}
                 <GaugeComponent
-                    value={50}
-                    maxValue={200}
+                    value={pitch}
+                    maxValue={300}
                     labels={{
                         valueLabel: {
                             formatTextValue: (value) => `${value} Hz`,
@@ -38,10 +58,9 @@ const GeneratedVoice: React.FC = () => {
             <div
                 className="text-xl text-center"
             >
-                English - American
             </div>
         </CardLayout>
     )
 }
 
-export default GeneratedVoice
+export default Pitch

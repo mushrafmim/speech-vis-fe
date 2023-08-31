@@ -2,47 +2,35 @@ import React, { useState } from 'react'
 import './App.css'
 import Age from './components/Age'
 import Gender from './components/Gender'
-import GeneratedVoice from './components/GeneratedVoice'
+import Pitch from './components/Pitch'
 import LanguageAndAccent from './components/LanguageAndAccent'
 
 import { BsFillCloudUploadFill, BsFillMicFill } from 'react-icons/bs'
-import { predictAgeCategory } from './services/ageService'
 import Button from './components/Button'
-import { predictGender } from './services/genderService'
 import Emotion from './components/Emotion'
 import Transcript from './components/Transcript'
 
-function App(): React.ReactElement {
+function App() {
 
-  const [file, setFile] = useState < File | null > (null)
-  const [audioURL, setAudioURL] = useState < string | undefined > ()
+  const [file, setFile] = useState<File | null>(null)
+  const [audioURL, setAudioURL] = useState<string | undefined>()
 
-  const [onPredict, setOnPredict] = useState < boolean > (false)
+  const [onPredict, setOnPredict] = useState<boolean>(false)
 
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
+    setOnPredict(false)
+
+    console.log("OnPredict Status, ", onPredict)
 
     if (e.target.files && e.target.files[0].size <= 1 * 1024 * 1024) {
       setFile(e.target.files[0])
       const audioURL = URL.createObjectURL(e.target.files[0])
       setAudioURL(audioURL)
 
+
     }
 
-  }
-
-  const makePrediction = () => {
-    predictAgeCategory(file)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(e => console.log(e))
-
-    predictGender(file)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(e => console.log(e))
   }
 
   return (
@@ -72,7 +60,7 @@ function App(): React.ReactElement {
           </div>
           <audio controls={true} src={audioURL}>
           </audio>
-          <Button text="PREDICT" onClick={() => setOnPredict(true)} disabled={audioURL ? false : true} />
+          <Button text="PREDICT" onClick={() => setOnPredict(true)} disabled={audioURL || onPredict ? false : true} />
         </div>
         <div>
         </div>
@@ -81,7 +69,7 @@ function App(): React.ReactElement {
         <Age file={file} isSubmitted={onPredict} />
         <Gender file={file} isSubmitted={onPredict} />
         <LanguageAndAccent file={file} isSubmitted={onPredict} />
-        <GeneratedVoice />
+        <Pitch file={file} isSubmitted={onPredict} />
       </div>
       <div className="flex justify-between">
         <Emotion file={file} isSubmitted={onPredict} />
