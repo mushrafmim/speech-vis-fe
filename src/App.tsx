@@ -9,6 +9,7 @@ import { BsFillCloudUploadFill, BsFillMicFill } from 'react-icons/bs'
 import Button from './components/Button'
 import Emotion from './components/Emotion'
 import Transcript from './components/Transcript'
+import RecordButton from './components/RecordButton'
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
   const [audioURL, setAudioURL] = useState<string | undefined>()
 
   const [onPredict, setOnPredict] = useState<boolean>(false)
+
+  const [isRecording, setIsRecording] = useState<boolean>(false)
 
 
   const handleFileChange = (e) => {
@@ -27,10 +30,7 @@ function App() {
       setFile(e.target.files[0])
       const audioURL = URL.createObjectURL(e.target.files[0])
       setAudioURL(audioURL)
-
-
     }
-
   }
 
   return (
@@ -41,18 +41,20 @@ function App() {
         <div
           className="flex gap-4 bg-white p-2 rounded-lg items-center shadow-sm"
         >
-          <div
-            className="rounded-full border-4 w-16 h-16 flex justify-center items-center bg-primary text-white"
-          >
-            <BsFillMicFill size={35} />
-          </div>
+          <RecordButton
+            setFile={setFile}
+            setAudioURL={setAudioURL}
+            setOnPredict={setOnPredict}
+            isRecording={isRecording}
+            setIsRecording={setIsRecording}
+          />
           <div className="relative rounded-full border-4 w-16 h-16 flex justify-center items-center bg-white text-primary">
             <input
               type="file"
               accept="audio/*"
               onChange={handleFileChange}
               title=""
-              className="opacity-0 absolute"
+              className="opacity-0 w-full h-full absolute"
             />
             <BsFillCloudUploadFill
               size={35}
