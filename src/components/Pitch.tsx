@@ -3,7 +3,12 @@ import CardLayout from "../layouts/CardLayout"
 import { useEffect, useState } from "react"
 import { getPitch } from "../services/pitchService"
 
-const Pitch: React.FC = ({ file, isSubmitted }) => {
+interface PitchCompProp {
+    file: Blob | null,
+    isSubmitted: boolean
+}
+
+const Pitch: React.FC<PitchCompProp> = ({ file, isSubmitted }) => {
     const [pitch, setPitch] = useState<number | undefined>(0)
 
     const makePrediction = () => {

@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
 import './App.css'
+
+import React, { useState } from 'react'
+import { BsFillCloudUploadFill } from 'react-icons/bs'
+
 import Age from './components/Age'
 import Gender from './components/Gender'
 import Pitch from './components/Pitch'
 import LanguageAndAccent from './components/LanguageAndAccent'
 
-import { BsFillCloudUploadFill, BsFillMicFill } from 'react-icons/bs'
 import Button from './components/Button'
 import Emotion from './components/Emotion'
 import Transcript from './components/Transcript'
@@ -21,7 +23,7 @@ function App() {
   const [isRecording, setIsRecording] = useState<boolean>(false)
 
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOnPredict(false)
 
     console.log("OnPredict Status, ", onPredict)
@@ -39,7 +41,7 @@ function App() {
     >
       <div>
         <div
-          className="flex gap-4 bg-white p-2 rounded-lg items-center shadow-sm"
+          className="flex gap-4 bg-background p-2 rounded-lg items-center shadow-sm"
         >
           <RecordButton
             setFile={setFile}
@@ -67,13 +69,13 @@ function App() {
         <div>
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex gap-4 my-4 justify-between flex-wrap">
         <Age file={file} isSubmitted={onPredict} />
         <Gender file={file} isSubmitted={onPredict} />
         <LanguageAndAccent file={file} isSubmitted={onPredict} />
         <Pitch file={file} isSubmitted={onPredict} />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap gap-4 my-4">
         <Emotion file={file} isSubmitted={onPredict} />
         <Transcript file={file} isSubmitted={onPredict} />
       </div>

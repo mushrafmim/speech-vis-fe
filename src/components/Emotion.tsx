@@ -37,16 +37,28 @@ const emotionMapping = {
     }
 }
 
-const Emotion: React.FC = ({ file, isSubmitted }) => {
+interface EmotionCompProp {
+    file: Blob | null,
+    isSubmitted: boolean
+}
+
+const Emotion: React.FC<EmotionCompProp> = ({ file, isSubmitted }) => {
     const [emotions, setEmotions] = useState([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
 
     const makePrediction = () => {
+        setIsLoading(true)
         predictEmotion(file)
             .then((res) => {
                 console.log(res)
+                setIsLoading(false)
                 setEmotions(res.data.slice(0, 3))
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                setIsLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -59,6 +71,7 @@ const Emotion: React.FC = ({ file, isSubmitted }) => {
         <CardLayout
             title="EMOTION"
             width_factor={2}
+            isLoading={isLoading}
         >
             <div className="flex align-center justify-evenly">
                 {emotions.map((emotion, index) => (

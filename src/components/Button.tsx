@@ -11,7 +11,7 @@ const Button: React.FC<ButtonProps> = ({ text, disabled, onClick }) => {
     return (
         <button
             onClick={onClick}
-            className={`${disabled ? `bg-slate-300 text-white` : `bg-primary text-white`} p-2 w-24 rounded-lg`}
+            className={`${disabled ? `bg-735F32 text-white` : `bg-buttonBackground text-black`} font-bold p-2 w-24 rounded-lg`}
             disabled={disabled ? true : false}
         >
             {text}

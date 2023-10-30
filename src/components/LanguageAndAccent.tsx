@@ -3,7 +3,6 @@ import CardLayout from "../layouts/CardLayout"
 import { predictAccent } from "../services/accentService"
 
 // Flag Icons
-import us from "./../assets/lang-acc/us.svg"
 import cn from "./../assets/lang-acc/cn.svg"
 import fr from "./../assets/lang-acc/fr.svg"
 import es from "./../assets/lang-acc/es.svg"
@@ -28,16 +27,27 @@ const accentMapping = {
     },
 }
 
-const LanguageAndAccent: React.FC = ({ file, isSubmitted }) => {
+interface LanguageAndAccentProp {
+    file: Blob | null,
+    isSubmitted: boolean
+}
+
+const LanguageAndAccent: React.FC<LanguageAndAccentProp> = ({ file, isSubmitted }) => {
     const [accent, setAccent] = useState()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const makePrediction = () => {
+        setIsLoading(true)
         predictAccent(file)
             .then((res) => {
                 console.log(res)
+                setIsLoading(false)
                 setAccent(res.data[0].label)
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                setIsLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -50,6 +60,7 @@ const LanguageAndAccent: React.FC = ({ file, isSubmitted }) => {
     return (
         <CardLayout
             title="Language and Accent"
+            isLoading={isLoading}
         >
             <div className="flex items-center justify-center mb-4">
                 <img src={accentMapping[accent]?.image} className="w-48 rounded-full" alt="" />

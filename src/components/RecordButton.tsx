@@ -1,6 +1,8 @@
+import { useState } from "react"
 import { BsFillMicFill } from "react-icons/bs"
 
 export default function RecordButton({ setFile, setAudioURL, setOnPredict, isRecording, setIsRecording }) {
+    const [mediaRecorder, setMediaRecorder] = useState < MediaRecorder > (null)
 
     const recordAudio = () => {
         setIsRecording(true)
@@ -23,22 +25,29 @@ export default function RecordButton({ setFile, setAudioURL, setOnPredict, isRec
                     setFile(audioBlob as File)
                 })
 
-                setTimeout(() => {
-                    setIsRecording(false)
-                    mediaRecorder.stop()
-                }, 3000)
+                setMediaRecorder(mediaRecorder)
+
+                // setTimeout(() => {
+                //     setIsRecording(false)
+                //     mediaRecorder.stop()
+                // }, 3000)
             })
+    }
+
+    const stopRecording = () => {
+        setIsRecording(false)
+        mediaRecorder.stop()
     }
 
     return (
         <button
-            className="rounded-full border-4 w-16 h-16 flex justify-center items-center text-white"
-            onClick={() => recordAudio()}
-            disabled={isRecording ? true : false}
+            className="rounded-full bg-buttonBackground w-16 h-16 flex justify-center items-center text-black"
+            onClick={() => isRecording ? stopRecording() : recordAudio()}
+        // disabled={isRecording ? true : false}
         >
             <BsFillMicFill
                 size={35}
-                className={isRecording ? `animate-pulse text-red-500` : `text-gray-500`}
+                className={isRecording ? `animate-pulse text-red` : `text-black`}
             />
         </button>
     )

@@ -9,9 +9,6 @@ import sixty_80 from "./../assets/age_category/sixty_80.svg"
 import { useEffect, useState } from "react";
 import { predictAgeCategory } from "../services/ageService";
 
-interface age_props {
-    category: string
-}
 
 const age_category = {
     "[0, 20)": {
@@ -32,17 +29,29 @@ const age_category = {
     }
 }
 
-const Age: React.FC<age_props> = ({ file, isSubmitted }) => {
+interface AgeCompProp {
+    file: Blob | null,
+    isSubmitted: boolean
+}
 
-    const [currentCategory, setCurrentCategory] = useState()
+const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
+
+    const [currentCategory, setCurrentCategory] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const makePrediction = () => {
+        setIsLoading(true)
+
         predictAgeCategory(file)
             .then((res) => {
                 console.log(res)
+                setIsLoading(false)
                 setCurrentCategory(res.data[0].label)
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                setIsLoading(false)
+            })
     }
 
     useEffect(() => {
@@ -54,6 +63,7 @@ const Age: React.FC<age_props> = ({ file, isSubmitted }) => {
     return (
         <CardLayout
             title={"AGE CATEGORY"}
+            isLoading={isLoading}
         >
             <div
                 className="flex items-center justify-center mb-4"
@@ -64,7 +74,7 @@ const Age: React.FC<age_props> = ({ file, isSubmitted }) => {
                 className="flex items-center justify-center"
             >
                 <div
-                    className="text-xl"
+                    className="text-xl text-buttonBackground"
                 >
                     {age_category[currentCategory]?.text}
                 </div>
