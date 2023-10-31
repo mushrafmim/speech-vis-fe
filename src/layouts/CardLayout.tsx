@@ -12,7 +12,7 @@ const CardLayout: React.FC<CardLayoutProp> = ({ title, isLoading, children, ...p
 
     return (
         <div
-            className={`h-80 flex-1 min-w-[350px] bg-background p-4 shadow-lg flex-grow`}
+            className={`h-80 flex-1 min-w-[350px] bg-background p-4 shadow-lg text-primaryText flex-grow`}
             {...props}
         >
             <div className="text-buttonBackground font-bold mb-4 uppercase">

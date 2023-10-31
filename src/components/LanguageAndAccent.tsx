@@ -7,6 +7,7 @@ import cn from "./../assets/lang-acc/cn.svg"
 import fr from "./../assets/lang-acc/fr.svg"
 import es from "./../assets/lang-acc/es.svg"
 import gb from "./../assets/lang-acc/gb.svg"
+import sa from "./../assets/lang-acc/sa.svg"
 
 const accentMapping = {
     "english": {
@@ -25,6 +26,10 @@ const accentMapping = {
         image: fr,
         text: "French"
     },
+    "arabic": {
+        image: sa,
+        text: "Arabic"
+    },
 }
 
 interface LanguageAndAccentProp {
@@ -38,7 +43,11 @@ const LanguageAndAccent: React.FC<LanguageAndAccentProp> = ({ file, isSubmitted 
 
     const makePrediction = () => {
         setIsLoading(true)
-        predictAccent(file)
+
+        const formData = new FormData()
+        formData.append("file", file)
+
+        predictAccent(formData)
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)

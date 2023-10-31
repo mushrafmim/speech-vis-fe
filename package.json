@@ -17,7 +17,8 @@
     "react-dom": "^18.2.0",
     "react-gauge-component": "^1.1.20",
     "react-icons": "^4.10.1",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "wavesurfer.js": "^7.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

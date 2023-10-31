@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import CardLayout from "../layouts/CardLayout"
 import { predictEmotion } from "../services/emotionService"
+import Waveform from "./Waveform"
 
 const emotionMapping = {
     "angry": {
@@ -37,23 +38,33 @@ const emotionMapping = {
     }
 }
 
+const data = ["sad", "happy", "angry", "calm", "disgust", "fearful", "neutral", "surprised"]
+
 interface EmotionCompProp {
     file: Blob | null,
+    audioURL: string | undefined,
     isSubmitted: boolean
 }
 
-const Emotion: React.FC<EmotionCompProp> = ({ file, isSubmitted }) => {
+const Emotion: React.FC<EmotionCompProp> = ({ file, isSubmitted, audioURL }) => {
     const [emotions, setEmotions] = useState([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
     const makePrediction = () => {
         setIsLoading(true)
-        predictEmotion(file)
+
+        const formData = new FormData()
+
+        formData.append("file", file)
+
+
+        predictEmotion(formData)
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)
-                setEmotions(res.data.slice(0, 3))
+                setEmotions(res.data)
+                console.log(emotions)
             })
             .catch(e => {
                 console.log(e)
@@ -70,11 +81,25 @@ const Emotion: React.FC<EmotionCompProp> = ({ file, isSubmitted }) => {
     return (
         <CardLayout
             title="EMOTION"
-            width_factor={2}
             isLoading={isLoading}
         >
-            <div className="flex align-center justify-evenly">
-                {emotions.map((emotion, index) => (
+            <div className="flex align-center">
+                <div className='flex-grow-[2] h-[100%]'>
+                    <Waveform audio={audioURL} />
+                    <div className="flex">
+                        {emotions.map((emotion, index) => (
+                            <div
+                                key={index}
+                                className="text-center border"
+                                style={{ width: `${100 / emotions.length}%` }}
+                            >{emotion[0].label}</div>
+                        )
+                        )}
+                    </div>
+                </div>
+            </div>
+            {/* <div className="flex align-center justify-evenly">
+                {emotions.map((emotion, index) => ( 
                     <div key={index} className="flex-1">
                         <div className="text-[9.5rem]">
                             {emotionMapping[emotion?.label]?.image}
@@ -92,9 +117,9 @@ const Emotion: React.FC<EmotionCompProp> = ({ file, isSubmitted }) => {
                             </div>
                         </div>
                     </div>
-                ))}
-            </div>
-        </CardLayout>
+                ))} */}
+            {/* </div> */}
+        </CardLayout >
     )
 }
 

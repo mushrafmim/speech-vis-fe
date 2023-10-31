@@ -1,6 +1,6 @@
 import './App.css'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
 
 import Age from './components/Age'
@@ -12,6 +12,9 @@ import Button from './components/Button'
 import Emotion from './components/Emotion'
 import Transcript from './components/Transcript'
 import RecordButton from './components/RecordButton'
+import Waveform from './components/Waveform'
+
+import pianoClip from './assets/test.wav'
 
 function App() {
 
@@ -21,6 +24,10 @@ function App() {
   const [onPredict, setOnPredict] = useState<boolean>(false)
 
   const [isRecording, setIsRecording] = useState<boolean>(false)
+
+  useEffect(() => {
+    setOnPredict(false)
+  }, [audioURL])
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +83,11 @@ function App() {
         <Pitch file={file} isSubmitted={onPredict} />
       </div>
       <div className="flex justify-between flex-wrap gap-4 my-4">
-        <Emotion file={file} isSubmitted={onPredict} />
+        <Emotion file={file} audioURL={audioURL} isSubmitted={onPredict} />
         <Transcript file={file} isSubmitted={onPredict} />
       </div>
+      {/* <Waveform audio={audioURL} /> */}
+
     </div>
   )
 }

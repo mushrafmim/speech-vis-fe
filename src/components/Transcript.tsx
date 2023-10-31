@@ -8,7 +8,11 @@ export default function Transcript({ file, isSubmitted }) {
 
     const makePrediction = () => {
         setIsLoading(true)
-        generateTranscript(file)
+
+        const formData = new FormData()
+        formData.append("file", file)
+
+        generateTranscript(formData)
             .then((res) => {
                 setIsLoading(false)
                 setTranscript(res.data.text)
@@ -32,7 +36,7 @@ export default function Transcript({ file, isSubmitted }) {
             title="TRANSCRIPT"
             isLoading={isLoading}
         >
-            <p className="text-2xl">
+            <p className="text-xl">
                 {transcript}
             </p>
         </CardLayout>

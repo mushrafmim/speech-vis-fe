@@ -21,8 +21,12 @@ const Gender: React.FC<GenderCompProp> = ({ file, isSubmitted }) => {
 
     const makePrediction = () => {
         setIsLoading(true)
+        console.log("Predicting")
 
-        predictGender(file)
+        const formdata = new FormData()
+        formdata.append("file", file)
+
+        predictGender(formdata)
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)

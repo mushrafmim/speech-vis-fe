@@ -42,7 +42,11 @@ const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
     const makePrediction = () => {
         setIsLoading(true)
 
-        predictAgeCategory(file)
+        const formData = new FormData()
+
+        formData.append("file", file)
+
+        predictAgeCategory(formData)
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)
@@ -74,7 +78,7 @@ const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
                 className="flex items-center justify-center"
             >
                 <div
-                    className="text-xl text-buttonBackground"
+                    className="text-xl"
                 >
                     {age_category[currentCategory]?.text}
                 </div>

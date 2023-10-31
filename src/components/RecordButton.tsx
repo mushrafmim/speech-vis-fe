@@ -21,16 +21,11 @@ export default function RecordButton({ setFile, setAudioURL, setOnPredict, isRec
                 mediaRecorder.addEventListener("stop", () => {
                     const audioBlob = new Blob(audioChunks)
                     const audioURL = URL.createObjectURL(audioBlob)
-                    setAudioURL(audioURL)
                     setFile(audioBlob as File)
+                    setAudioURL(audioURL)
                 })
 
                 setMediaRecorder(mediaRecorder)
-
-                // setTimeout(() => {
-                //     setIsRecording(false)
-                //     mediaRecorder.stop()
-                // }, 3000)
             })
     }
 

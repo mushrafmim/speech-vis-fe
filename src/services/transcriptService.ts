@@ -1,10 +1,11 @@
-import http from "../../http-common"
+import { local_server } from "../../http-common"
 
-
-const sub_URL = "jonatasgrosman/wav2vec2-large-xlsr-53-english"
-
-async function generateTranscript(data: File) {
-    return http.post(sub_URL, data)
+async function generateTranscript(data: FormData) {
+    return local_server.post("api/transcript", data, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
 }
 
 export {
