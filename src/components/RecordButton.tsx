@@ -10,7 +10,7 @@ export default function RecordButton({ setFile, setAudioURL, setOnPredict, isRec
 
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
-                const mediaRecorder = new MediaRecorder(stream)
+                const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
                 mediaRecorder.start()
                 const audioChunks: any[] = []
 
@@ -19,7 +19,8 @@ export default function RecordButton({ setFile, setAudioURL, setOnPredict, isRec
                 })
 
                 mediaRecorder.addEventListener("stop", () => {
-                    const audioBlob = new Blob(audioChunks)
+                    const audioBlob = new Blob(audioChunks, { type: "audio/wav" })
+                    console.log(audioBlob)
                     const audioURL = URL.createObjectURL(audioBlob)
                     setFile(audioBlob as File)
                     setAudioURL(audioURL)

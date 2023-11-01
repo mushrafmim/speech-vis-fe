@@ -18,6 +18,7 @@ const Pitch: React.FC<PitchCompProp> = ({ file, isSubmitted }) => {
 
         getPitch(formdata)
             .then((res) => {
+                console.log(res)
                 setPitch(res.data.pitch)
             })
             .catch(e => console.log(e))

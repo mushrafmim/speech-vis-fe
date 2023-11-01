@@ -11,21 +11,33 @@ import { predictAgeCategory } from "../services/ageService";
 
 
 const age_category = {
-    "[0, 20)": {
+    "<20": {
         image: zero_20,
         text: "0 - 20"
     },
-    "[20, 40)": {
+    "20": {
         image: twenty_40,
-        text: "20 - 40"
+        text: "20 - 30"
     },
-    "[40, 60)": {
+    "30": {
+        image: twenty_40,
+        text: "30 - 40"
+    },
+    "40": {
         image: forty_60,
-        text: "40 - 60"
+        text: "40 - 50"
     },
-    "[60, 80)": {
+    "50": {
+        image: forty_60,
+        text: "50 - 60"
+    },
+    "60": {
         image: sixty_80,
-        text: "60 - 80"
+        text: "60 - 70"
+    },
+    ">70": {
+        image: sixty_80,
+        text: "70+"
     }
 }
 
@@ -38,6 +50,8 @@ const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
 
     const [currentCategory, setCurrentCategory] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [seeMore, setSeeMore] = useState<boolean>(false)
+    const [data, setData] = useState<any>(null)
 
     const makePrediction = () => {
         setIsLoading(true)
@@ -50,7 +64,8 @@ const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)
-                setCurrentCategory(res.data[0].label)
+                setData(res.data)
+                setCurrentCategory(res.data.label)
             })
             .catch(e => {
                 console.log(e)
@@ -69,19 +84,48 @@ const Age: React.FC<AgeCompProp> = ({ file, isSubmitted }) => {
             title={"AGE CATEGORY"}
             isLoading={isLoading}
         >
+            {seeMore ? <table className="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th className="px-4 py-2">Age Category</th>
+                        <th className="px-4 py-2">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data &&
+                        <tr>
+                            <td className="border px-4 py-2">{data.label}</td>
+                            <td className="border px-4 py-2">{data.score.toFixed(4)}</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+                :
+                <>
+                    <div
+                        className="flex items-center justify-center mb-4"
+                    >
+                        <img src={age_category[currentCategory]?.image} className="h-48" alt="" />
+                    </div>
+                    <div
+                        className="flex items-center justify-center"
+                    >
+                        <div
+                            className="text-xl"
+                        >
+                            {age_category[currentCategory]?.text}
+                        </div>
+                    </div>
+                </>}
             <div
-                className="flex items-center justify-center mb-4"
+                className="flex justify-end absolute end-0 bottom-0"
             >
-                <img src={age_category[currentCategory]?.image} className="h-48" alt="" />
-            </div>
-            <div
-                className="flex items-center justify-center"
-            >
-                <div
-                    className="text-xl"
+                <button
+                    className="text-buttonBackground font-bold text-center p-2 mt-4 rounded-lg"
+                    onClick={() => setSeeMore(!seeMore)}
                 >
-                    {age_category[currentCategory]?.text}
-                </div>
+                    SEE MORE
+                </button>
             </div>
         </CardLayout >
     )

@@ -71,7 +71,7 @@ function App() {
           </div>
           <audio controls={true} src={audioURL}>
           </audio>
-          <Button text="PREDICT" onClick={() => setOnPredict(true)} disabled={audioURL || onPredict ? false : true} />
+          <Button text={isRecording ? `RECORDING` : `PREDICT`} onClick={() => setOnPredict(true)} disabled={audioURL || onPredict ? false : true} />
         </div>
         <div>
         </div>

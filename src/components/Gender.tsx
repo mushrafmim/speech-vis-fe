@@ -17,6 +17,8 @@ interface GenderCompProp {
 const Gender: React.FC<GenderCompProp> = ({ file, isSubmitted }) => {
     const [currentGender, setCurrentGender] = useState("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [seeMore, isSeeMore] = useState<boolean>(false)
+    const [data, setData] = useState<any>(null)
 
 
     const makePrediction = () => {
@@ -30,6 +32,7 @@ const Gender: React.FC<GenderCompProp> = ({ file, isSubmitted }) => {
             .then((res) => {
                 console.log(res)
                 setIsLoading(false)
+                setData(res.data)
                 setCurrentGender(res.data[0].label)
             })
             .catch(e => {
@@ -51,19 +54,49 @@ const Gender: React.FC<GenderCompProp> = ({ file, isSubmitted }) => {
             title="GENDER"
             isLoading={isLoading}
         >
-            <div className="flex items-center justify-center mb-4">
-                <img src={gender[currentGender]} className="w-52" alt="" />
-            </div>
+            {seeMore ? <table className="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th className="px-4 py-2">Label</th>
+                        <th className="px-4 py-2">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {data && data.map((item: any) => (
+                        <tr key={item.label}>
+                            <td className="border px-4 py-2">{item.label}</td>
+                            <td className="border px-4 py-2">{item.score.toFixed(4)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+                :
+                <>
+                    <div className="flex items-center justify-center mb-4">
+                        <img src={gender[currentGender]} className="w-48" alt="" />
+                    </div>
+                    <div
+                        className="flex items-center justify-center"
+                    >
+                        <div
+                            className="text-xl"
+                        >
+                            {currentGender}
+                        </div>
+                    </div>
+                </>
+            }
             <div
-                className="flex items-center justify-center"
+                className="flex justify-end absolute end-0 bottom-0"
             >
-                <div
-                    className="text-xl"
+                <button
+                    className="text-buttonBackground font-bold text-center p-2 mt-4 rounded-lg"
+                    onClick={() => isSeeMore(!seeMore)}
                 >
-                    {currentGender}
-                </div>
+                    SEE MORE
+                </button>
             </div>
-        </CardLayout>
+        </CardLayout >
     )
 };
 
